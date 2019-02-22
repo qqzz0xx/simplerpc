@@ -28,7 +28,7 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
         this.port = port;
     }
 
-    public RpcResponse send(RpcRequest requset) {
+    public RpcResponse send(RpcRequest request) {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class);
@@ -46,7 +46,7 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
 
         try {
             ChannelFuture future = bootstrap.connect(address, port).sync();
-            future.channel().writeAndFlush(requset).sync();
+            future.channel().writeAndFlush(request).sync();
 
             lock.lock();
             condition.await();
